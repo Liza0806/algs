@@ -1,4 +1,4 @@
-const bubbleSort = (arr) => {
+const buubbleSort = (arr) => {
     for (let i = 0; i < arr.length; i++){
         for (let j = 0; j < arr.length - i -1; j++){
             let temp = arr[j];
@@ -11,5 +11,4 @@ const bubbleSort = (arr) => {
 console.log(arr)
 }
 let b = [5, 3, 8, 4, 2]; 
-bubbleSort(b)
-
+//buubbleSort(b)
