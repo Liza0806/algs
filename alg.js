@@ -141,16 +141,17 @@ let array = [1, 3, 5, 7, 9, 11];
 const anotherBinarySearch = (arr, x) => {
   let left = 0;
   let right = arr.length - 1;
- 
-  while (left <= right) {  // рекурсию переписываем циклами и чаще это while. Удобно, тк сразу и условие выхода
-    let midInd = Math.floor((right + left) / 2);  // индекс будет динамически на каждом цикле свой
+
+  while (left <= right) {
+    // рекурсию переписываем циклами и чаще это while. Удобно, тк сразу и условие выхода
+    let midInd = Math.floor((right + left) / 2); // индекс будет динамически на каждом цикле свой
     if (arr[midInd] === x) {
       console.log(midInd);
       return midInd;
     }
 
     if (x > arr[midInd]) {
-      left = midInd + 1;  // и на каждом цикле переназначаем лефт или райт, в зависимости от случая
+      left = midInd + 1; // и на каждом цикле переназначаем лефт или райт, в зависимости от случая
     }
     if (x < arr[midInd]) {
       right = midInd - 1;
@@ -158,91 +159,152 @@ const anotherBinarySearch = (arr, x) => {
   }
   return -1;
 };
-  ////////////// ОБРАТИ ВНИМАНИЕ, ЧТО В БИНАРНОМ ПОИСКЕ БЕЗ РЕКУРСИИ ТЕБЕ МОЖНО НЕ ПЕРЕДАВАТЬ ЛЕФТ И РАЙТ  //////////////
-    ////////////// впрочем, как напишешь, так и будет //////////////
+////////////// ОБРАТИ ВНИМАНИЕ, ЧТО В БИНАРНОМ ПОИСКЕ БЕЗ РЕКУРСИИ ТЕБЕ МОЖНО НЕ ПЕРЕДАВАТЬ ЛЕФТ И РАЙТ  //////////////
+////////////// впрочем, как напишешь, так и будет //////////////
 //anotherBinarySearch(array, 7);
 
 const mergeSort = (arr) => {
-  if(arr.length<=1){
+  if (arr.length <= 1) {
     return arr;
   }
-const middle = Math.floor((0+ arr.length)/2);
-const leftSide = arr.slice(0, middle);
-const rightSide = arr.slice(middle);
-const sortedRight = mergeSort(rightSide);
-const sortedLeft = mergeSort(leftSide);
-return merge(sortedLeft, sortedRight)
-}
-const merge = (sortedLeft, sortedRight)=> {
+  const middle = Math.floor((0 + arr.length) / 2);
+  const leftSide = arr.slice(0, middle);
+  const rightSide = arr.slice(middle);
+  const sortedRight = mergeSort(rightSide);
+  const sortedLeft = mergeSort(leftSide);
+  return merge(sortedLeft, sortedRight);
+};
+const merge = (sortedLeft, sortedRight) => {
   const result = [];
   let i = 0; // Указатель для левого массива
   let j = 0; // Указатель для правого массива
-     // Сравниваем элементы двух массивов и добавляем наименьший
-     while (i < sortedLeft.length && j < sortedRight.length) {
-      if(sortedLeft[i]< sortedRight[j]){
-        result.push(sortedLeft[i]);
-        i++;
-      } else{
-        result.push(sortedRight[j]);
-        j++;
-      }
-     }
-     while (i < sortedLeft.length) {
+  // Сравниваем элементы двух массивов и добавляем наименьший
+  while (i < sortedLeft.length && j < sortedRight.length) {
+    if (sortedLeft[i] < sortedRight[j]) {
       result.push(sortedLeft[i]);
       i++;
-     }
-     while (j < sortedRight.length) {
+    } else {
       result.push(sortedRight[j]);
       j++;
-     }
-     return result;
-}
-
+    }
+  }
+  while (i < sortedLeft.length) {
+    result.push(sortedLeft[i]);
+    i++;
+  }
+  while (j < sortedRight.length) {
+    result.push(sortedRight[j]);
+    j++;
+  }
+  return result;
+};
 
 //const arra = [8, 3, 5, 4, 7, 6, 2, 1];
 //const sortedArray = mergeSort(arra);
 //console.log(sortedArray); // [1, 2, 3, 4, 5, 6, 7, 8]
 const mergeSortAbc = (arr) => {
-  if (arr.length<=1){
+  if (arr.length <= 1) {
     return arr;
   }
-  let mid = Math.floor(arr.length/2);
+  let mid = Math.floor(arr.length / 2);
   let l = arr.slice(0, mid);
   let r = arr.slice(mid);
-let sortedL = mergeSortAbc(l);
-let sortedR = mergeSortAbc(r);
-return mergeAbc(sortedL, sortedR);
-}
+  let sortedL = mergeSortAbc(l);
+  let sortedR = mergeSortAbc(r);
+  return mergeAbc(sortedL, sortedR);
+};
 const mergeAbc = (left, right) => {
   let i = 0;
   let j = 0;
   let res = [];
-  while(i < left.length && j < right.length){
-if(left[i][0].localeCompare(right[j][0])<0){
-res.push(left[i])
-i++
-}else {
-  res.push(right[j])
-  j++
-}
-
+  while (i < left.length && j < right.length) {
+    if (left[i][0].localeCompare(right[j][0]) < 0) {
+      res.push(left[i]);
+      i++;
+    } else {
+      res.push(right[j]);
+      j++;
+    }
   }
-  while (i<left.length){
-    res.push(left[i])
-  i++
+  while (i < left.length) {
+    res.push(left[i]);
+    i++;
   }
-  while(j<right.length){
-    res.push(right[j])
-    j++
+  while (j < right.length) {
+    res.push(right[j]);
+    j++;
   }
-return res;
-}
+  return res;
+};
 
 //console.log(mergeSortAbc(["banana", "apple", "grape", "kiwi"]))
 const data = [
   { name: "Alice", age: 25 },
   { name: "Bob", age: 22 },
-  { name: "Charlie", age: 30 }
+  { name: "Charlie", age: 30 },
 ];
 // mergeSort(data, "age");
 
+const mergeSortObj = (arr, field) => {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  let mid = Math.floor(arr.length / 2);
+  let l = arr.slice(0, mid);
+  let r = arr.slice(mid);
+  let sortedL = mergeSortObj(l, field);
+  let sortedR = mergeSortObj(r, field);
+  return mergeA(sortedL, sortedR, field);
+};
+
+const mergeA = (left, right, field) => {
+  let i = 0;
+  let j = 0;
+  let res = [];    
+  while (i < left.length && j < right.length) {
+
+  if (
+    typeof left[i][field] === "string" &&
+    typeof right[j][field] === "string"
+  ) 
+  {
+
+      if (left[i][field].localeCompare(right[i][field]) < 0) {
+        res.push(left[i]);
+        i++;
+      } else {
+        res.push(right[j]);
+        j++;
+      }
+    }
+  else if (
+    typeof left[i][field] === "number" &&
+    typeof right[j][field] === "number"
+  ) {
+  
+      if (left[i][field] < right[i][field]) {
+        res.push(left[i]);
+        i++;
+      } else {
+        res.push(right[j]);
+        j++;
+      }
+    }
+    while (i < left.length) {
+      res.push(left[i]);
+      i++;
+    }
+    while (j < right.length) {
+      res.push(right[j]);
+      j++;
+    }
+   }
+  return res;
+};
+
+const dataA = [
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 22 },
+  { name: "Charlie", age: 30 },
+];
+console.log(mergeSortObj(dataA, "age"));
