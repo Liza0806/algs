@@ -161,3 +161,44 @@ const anotherBinarySearch = (arr, x) => {
   ////////////// ОБРАТИ ВНИМАНИЕ, ЧТО В БИНАРНОМ ПОИСКЕ БЕЗ РЕКУРСИИ ТЕБЕ МОЖНО НЕ ПЕРЕДАВАТЬ ЛЕФТ И РАЙТ  //////////////
     ////////////// впрочем, как напишешь, так и будет //////////////
 //anotherBinarySearch(array, 7);
+
+const mergeSort = (arr) => {
+  if(arr.length<=1){
+    return arr;
+  }
+const middle = Math.floor((0+ arr.length)/2);
+const leftSide = arr.slice(0, middle);
+const rightSide = arr.slice(middle);
+const sortedRight = mergeSort(rightSide);
+const sortedLeft = mergeSort(leftSide);
+return merge(sortedLeft, sortedRight)
+}
+const merge = (sortedLeft, sortedRight)=> {
+  const result = [];
+  let i = 0; // Указатель для левого массива
+  let j = 0; // Указатель для правого массива
+     // Сравниваем элементы двух массивов и добавляем наименьший
+     while (i < sortedLeft.length && j < sortedRight.length) {
+      if(sortedLeft[i]< sortedRight[j]){
+        result.push(sortedLeft[i]);
+        i++;
+      } else{
+        result.push(sortedRight[j]);
+        j++;
+      }
+     }
+     while (i < sortedLeft.length) {
+      result.push(sortedLeft[i]);
+      i++;
+     }
+     while (j < sortedRight.length) {
+      result.push(sortedRight[j]);
+      j++;
+     }
+     return result;
+}
+
+
+//const arra = [8, 3, 5, 4, 7, 6, 2, 1];
+//const sortedArray = mergeSort(arra);
+//console.log(sortedArray); // [1, 2, 3, 4, 5, 6, 7, 8]

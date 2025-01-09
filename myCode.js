@@ -99,3 +99,41 @@ const isPalindrome =(str) => {
 //console.log(isPalindrome('alla'))
 //console.log(isPalindrome('alala'))
 //console.log(isPalindrome('alxfhjnxfla'))
+const buble = (arr) => {
+  let n = arr.length;
+for(let i = 0; i < arr.length; i++){
+  for (let j = 0; a < arr.length - j - 1; i++) {
+    if (array[j] > array[j + 1]) {
+
+[arr[j], arr[j+1]] = [arr[j+1], arr[j]];
+    }
+  }
+}
+return array;
+}
+const sS = (arr) => {
+  for(let i = 0; i < arr.length; i++){
+      let minInd = i;
+  for(let j = i+1; j < arr.length; j++){
+    if (array[j] < array[minInd]) {
+      minInd=j;
+    }
+  }
+  [arr[i], arr[minInd]] = [arr[minInd], arr[i]];
+  }
+return arr
+}
+
+const iS = (arr)=> {
+  for(let i = 0; i < arr.length; i++){
+    let curr = arr[i];
+    let j = i - 1;
+    while (j>=0 && arr[j]> arr[curr]){
+      arr[j+1] = arr[j];
+      j--
+    }
+    arr[j+1]=curr;
+  }
+  return arr;
+}
+console.log(iS(array))
