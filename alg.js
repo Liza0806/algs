@@ -202,3 +202,47 @@ const merge = (sortedLeft, sortedRight)=> {
 //const arra = [8, 3, 5, 4, 7, 6, 2, 1];
 //const sortedArray = mergeSort(arra);
 //console.log(sortedArray); // [1, 2, 3, 4, 5, 6, 7, 8]
+const mergeSortAbc = (arr) => {
+  if (arr.length<=1){
+    return arr;
+  }
+  let mid = Math.floor(arr.length/2);
+  let l = arr.slice(0, mid);
+  let r = arr.slice(mid);
+let sortedL = mergeSortAbc(l);
+let sortedR = mergeSortAbc(r);
+return mergeAbc(sortedL, sortedR);
+}
+const mergeAbc = (left, right) => {
+  let i = 0;
+  let j = 0;
+  let res = [];
+  while(i < left.length && j < right.length){
+if(left[i][0].localeCompare(right[j][0])<0){
+res.push(left[i])
+i++
+}else {
+  res.push(right[j])
+  j++
+}
+
+  }
+  while (i<left.length){
+    res.push(left[i])
+  i++
+  }
+  while(j<right.length){
+    res.push(right[j])
+    j++
+  }
+return res;
+}
+
+//console.log(mergeSortAbc(["banana", "apple", "grape", "kiwi"]))
+const data = [
+  { name: "Alice", age: 25 },
+  { name: "Bob", age: 22 },
+  { name: "Charlie", age: 30 }
+];
+// mergeSort(data, "age");
+
