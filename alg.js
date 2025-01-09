@@ -260,15 +260,12 @@ const mergeSortObj = (arr, field) => {
 const mergeA = (left, right, field) => {
   let i = 0;
   let j = 0;
-  let res = [];    
+  let res = [];
   while (i < left.length && j < right.length) {
-
-  if (
-    typeof left[i][field] === "string" &&
-    typeof right[j][field] === "string"
-  ) 
-  {
-
+    if (
+      typeof left[i][field] === "string" &&
+      typeof right[j][field] === "string"
+    ) {
       if (left[i][field].localeCompare(right[i][field]) < 0) {
         res.push(left[i]);
         i++;
@@ -276,12 +273,10 @@ const mergeA = (left, right, field) => {
         res.push(right[j]);
         j++;
       }
-    }
-  else if (
-    typeof left[i][field] === "number" &&
-    typeof right[j][field] === "number"
-  ) {
-  
+    } else if (
+      typeof left[i][field] === "number" &&
+      typeof right[j][field] === "number"
+    ) {
       if (left[i][field] < right[i][field]) {
         res.push(left[i]);
         i++;
@@ -298,7 +293,7 @@ const mergeA = (left, right, field) => {
       res.push(right[j]);
       j++;
     }
-   }
+  }
   return res;
 };
 
@@ -308,3 +303,41 @@ const dataA = [
   { name: "Charlie", age: 30 },
 ];
 console.log(mergeSortObj(dataA, "age"));
+
+const mergeSortEvenOdd = (arr) => {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  const mid = Math.floor(arr.length / 2);
+  const l = arr.slice(0, mid);
+  const r = arr.slice(mid);
+  const sortedL = mergeSortEvenOdd(l);
+  const sortedR = mergeSortEvenOdd(r);
+  return mergeEvenOdd(sortedL, sortedR);
+};
+const mergeEvenOdd = (left, right) => {
+  let i = 0;
+  let j = 0;
+  let resOdd = [];
+  let resEven = [];
+  let final = [];
+  while (i < left.length && j < right.length) {
+    if (left[i] < right[j]) {
+      left[i] % 2 === 0 ? resOdd.push(left[i]) : resEven.push(left[i]);
+      i++;
+    } else {
+      right[j] % 2 === 0 ? resOdd.push(right[j]) : resEven.push(right[j]);
+      j++;
+    }
+  }
+  while (i < left.length) {
+    left[i] % 2 === 0 ? resOdd.push(left[i]) : resEven.push(left[i]);
+    i++;
+  }
+  while (j < right.length) {
+    right[j] % 2 === 0 ? resOdd.push(right[j]) : resEven.push(right[j]);
+    j++;
+  }
+  return [...resOdd, ...resEven];
+};
+console.log(mergeSortEvenOdd([5, 2, 4, 7, 8, 3, 6, 1]));
