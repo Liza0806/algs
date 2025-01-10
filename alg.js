@@ -395,3 +395,25 @@ else if (arr[i].localeCompare(pivot)>0){
 }
 const arrAbc = ["apple", "banana", "orange", "grape", "pear"];
 //console.log(quickSortAbc(arrAbc));
+const quickSortStringLength = (arr) => {
+if (arr.length <= 1){
+  return arr;
+}
+let pivot = arr[Math.floor(arr.length/2)];
+let less = [];
+let greater = [];
+for (let i = 0; i < arr.length; i++){
+  if (arr[i].length === pivot.length) {
+    continue;
+  }
+  else if (arr[i].length < pivot.length){
+    less.push(arr[i]);
+  }
+  else if (arr[i].length > pivot.length){
+    greater.push(arr[i])
+  }
+}
+return [...quickSortStringLength(less), pivot, ...quickSortStringLength(greater)]
+}
+const arrLength = ["abc", "a", "ab", "abcd"];
+console.log(quickSortStringLength(arrLength))
