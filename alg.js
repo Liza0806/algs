@@ -373,3 +373,25 @@ const quickSort = (arr) => {
 //console.log(quickSort(arra))
 //Пример ввода: ["apple", "banana", "orange", "grape", "pear"]
 //Пример вывода: ["apple", "banana", "grape", "orange", "pear"]
+const quickSortAbc = (arr) => {
+  if (arr.length <= 1){
+    return arr;
+  }
+  let pivot = arr[Math.floor(arr.length/2)];
+  let less = [];
+  let greater = [];
+  for (let i = 0; i < arr.length; i++){
+    if (arr[i] === pivot){
+      continue;
+    }
+   else if (arr[i].localeCompare(pivot)<0){
+      less.push(arr[i]);
+    }
+else if (arr[i].localeCompare(pivot)>0){
+  greater.push(arr[i]);
+}
+  }
+  return [...quickSortAbc(less), pivot, ...quickSortAbc(greater)]
+}
+const arrAbc = ["apple", "banana", "orange", "grape", "pear"];
+//console.log(quickSortAbc(arrAbc));
