@@ -136,4 +136,4 @@ const iS = (arr)=> {
   }
   return arr;
 }
-console.log(iS(array))
+//console.log(iS(array))

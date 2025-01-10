@@ -124,7 +124,7 @@ const binarySearch = (arr, left, right, x) => {
   }
   if (arr[midInd] === x) {
     // удачный сценарий, нашли
-    console.log(midInd);
+   // console.log(midInd);
     return midInd;
   }
   if (x > arr[midInd]) {
@@ -164,6 +164,7 @@ const anotherBinarySearch = (arr, x) => {
 //anotherBinarySearch(array, 7);
 
 const mergeSort = (arr) => {
+  
   if (arr.length <= 1) {
     return arr;
   }
@@ -199,9 +200,9 @@ const merge = (sortedLeft, sortedRight) => {
   return result;
 };
 
-//const arra = [8, 3, 5, 4, 7, 6, 2, 1];
-//const sortedArray = mergeSort(arra);
-//console.log(sortedArray); // [1, 2, 3, 4, 5, 6, 7, 8]
+const arra = [8, 3, 5, 4, 7, 6, 2, 1];
+// const sortedArray = mergeSort(arra);
+// console.log(sortedArray); // [1, 2, 3, 4, 5, 6, 7, 8]
 const mergeSortAbc = (arr) => {
   if (arr.length <= 1) {
     return arr;
@@ -302,10 +303,12 @@ const dataA = [
   { name: "Bob", age: 22 },
   { name: "Charlie", age: 30 },
 ];
-console.log(mergeSortObj(dataA, "age"));
+// console.log(mergeSortObj(dataA, "age"));
 
 const mergeSortEvenOdd = (arr) => {
+  debugger
   if (arr.length <= 1) {
+    debugger
     return arr;
   }
   const mid = Math.floor(arr.length / 2);
@@ -313,6 +316,7 @@ const mergeSortEvenOdd = (arr) => {
   const r = arr.slice(mid);
   const sortedL = mergeSortEvenOdd(l);
   const sortedR = mergeSortEvenOdd(r);
+  debugger
   return mergeEvenOdd(sortedL, sortedR);
 };
 const mergeEvenOdd = (left, right) => {
@@ -320,24 +324,52 @@ const mergeEvenOdd = (left, right) => {
   let j = 0;
   let resOdd = [];
   let resEven = [];
-  let final = [];
+
   while (i < left.length && j < right.length) {
+    debugger
     if (left[i] < right[j]) {
+      
       left[i] % 2 === 0 ? resOdd.push(left[i]) : resEven.push(left[i]);
       i++;
+      debugger
     } else {
+      
       right[j] % 2 === 0 ? resOdd.push(right[j]) : resEven.push(right[j]);
       j++;
+      debugger
     }
   }
   while (i < left.length) {
     left[i] % 2 === 0 ? resOdd.push(left[i]) : resEven.push(left[i]);
     i++;
+    debugger
   }
   while (j < right.length) {
     right[j] % 2 === 0 ? resOdd.push(right[j]) : resEven.push(right[j]);
     j++;
+    debugger
   }
   return [...resOdd, ...resEven];
 };
-console.log(mergeSortEvenOdd([5, 2, 4, 7, 8, 3, 6, 1]));
+//console.log(mergeSortEvenOdd([5, 2, 4, 7, 8, 3, 6, 1]));
+const quickSort = (arr) => {
+  if(arr.length<=1){
+    return arr;
+  }
+  let pivot = arr[Math.floor(arr.length/2)];
+  let less = [];
+  let greater = [];
+  
+  for (let i = 0; i<arr.length; i++){
+    if (arr[i] === pivot) continue; 
+    if(arr[i]<pivot){
+      less.push(arr[i])
+    } else {
+      greater.push(arr[i])
+    }
+  }
+  return [...quickSort(less), pivot, ...quickSort(greater)]
+}
+//console.log(quickSort(arra))
+//Пример ввода: ["apple", "banana", "orange", "grape", "pear"]
+//Пример вывода: ["apple", "banana", "grape", "orange", "pear"]
