@@ -137,3 +137,54 @@ const iS = (arr)=> {
   return arr;
 }
 //console.log(iS(array))
+
+
+const findMin = (arr) => {
+  let min = arr[0];
+  let ind = 0;
+  for (let i = 0; i < arr.length; i++) {
+    // делаем отдельную функцию поиска минимального, чтобы не сорить в коде
+    if (arr[i] < min) {
+      min = arr[i];
+      ind = i;
+    }
+  }
+  return { index: ind, minValue: min };
+};
+
+const selectionSort = (arr) => {
+  let sortedArr = [];
+  while (arr.length > 0) {
+    // используй тут именно while, так будет короче и красивее - массив уменьшается с каждым сплайсом, это нужно учитывать
+    let { index, minValue } = findMin(arr);
+    sortedArr.push(minValue);
+    arr.splice(index, 1);
+  }
+  console.log(sortedArr);
+  return sortedArr;
+};
+
+function dfs(graph, node, visited = new Set()) {
+  if (visited.has(node)) return;
+
+  console.log(node); // Действие с узлом
+  visited.add(node);
+
+  for (const neighbor of graph[node]) {
+    dfs(graph, neighbor, visited);
+  }
+}
+function bfs(graph, startNode) {
+  const visited = new Set();
+  const queue = [startNode];
+
+  while (queue.length > 0) {
+    const node = queue.shift(); // Извлекаем первый элемент
+    if (!visited.has(node)) {
+      console.log(node); // Действие с узлом
+      visited.add(node);
+      // Добавляем соседей, если они ещё не посещены
+      queue.push(...graph[node].filter((neighbor) => !visited.has(neighbor)));
+    }
+  }
+}
