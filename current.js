@@ -66,7 +66,7 @@ const graph = {
 
 //bfs(graph, "A"); // Вывод: A B C D E F
 
-class Node {
+class Node1 {
   constructor(value) {
     this.value = value;
     this.left = null;
@@ -79,7 +79,7 @@ class BinaryTree {
     this.root = null;
   }
   add(value) {
-    const newNode = new Node(value);
+    const newNode = new Node1(value);
     if (!this.root) {
       this.root = newNode;
       return;
@@ -168,15 +168,265 @@ myTree.add(2);
 myTree.add(11);
 
 //console.log(myTree);
-myTree.traverseDfs((node) => {
-  console.log(node.value);
-}, "preOrder");
-myTree.traverseDfs((node) => {
-  console.log(node.value);
-}, "inOrder");
-myTree.traverseDfs((node) => {
-  console.log(node.value);
-}, "postOrder");
-myTree.traverseBfs((node) => {
-  console.log(node.value);
-});
+// myTree.traverseDfs((node) => {
+//   console.log(node.value);
+// }, "preOrder");
+// myTree.traverseDfs((node) => {
+//   console.log(node.value);
+// }, "inOrder");
+// myTree.traverseDfs((node) => {
+//   console.log(node.value);
+// }, "postOrder");
+// myTree.traverseBfs((node) => {
+//   console.log(node.value);
+// });
+
+const arr = [1, 3, 2, 0, 2, 9, 7];
+
+const bs = (arr) => {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - 1 - i; j++) {
+      if (arr[j] > arr[j + 1]) {
+        [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+      }
+    }
+  }
+  return arr;
+};
+
+const ins = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    let cur = arr[i];
+    let j = i - 1;
+    while (j >= 0 && arr[j] > cur) {
+      [arr[j + 1], arr[j]] = [arr[j], arr[j + 1]];
+      j--;
+    }
+    arr[j + 1] = cur;
+  }
+  return arr;
+};
+
+const sel = (arr) => {
+  let arrS = [];
+  while (arr.length > 0) {
+    let { ind, el } = findM(arr);
+    arrS.push(el);
+    arr.splice(ind, 1);
+  }
+
+  return arrS;
+};
+const findM = (arr) => {
+  let el = arr[0];
+  let ind = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < el) {
+      el = arr[i];
+      ind = i;
+    }
+  }
+  return { ind: ind, el: el };
+};
+
+const mS = (arr) => {
+  if (arr.length <= 1) {
+    return arr;
+  }
+  let mid = Math.floor((0 + arr.length) / 2);
+  let l = arr.slice(0, mid);
+  let r = arr.slice(mid);
+  let left = mS(l);
+  let right = mS(r);
+  return mr(left, right);
+};
+const mr = (left, right) => {
+  let res = [];
+  let i = 0;
+  let j = 0;
+  while (i < left[i] && j < right[j]) {
+    if (left[i] < right[j]) {
+      res.push(left[i]);
+      i++;
+    } else {
+      res.push(right[j]);
+      j++;
+    }
+  }
+  while (i < left.length) {
+    res.push(left[i]);
+    i++;
+  }
+  while (j < right.length) {
+    res.push(right[j]);
+    j++;
+  }
+  return res;
+};
+
+const qs = (arr) => {
+  const pivot = arr[Math.floor((0 + arr.length) / 2)];
+  const less = [];
+  const greater = [];
+  if (arr.length <= 1) {
+    return arr;
+  }
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === pivot) continue;
+    if (arr[i] < pivot) {
+      less.push(arr[i]);
+    } else {
+      greater.push(arr[i]);
+    }
+  }
+
+  return [...qs(less), pivot, ...qs(greater)];
+};
+//console.log(qs(arr));
+
+const bp = (arr, x, left = 0, right = arr.length) => {
+  let mid = Math.floor((left + right) / 2);
+  if (arr[mid] === x) {
+    return mid;
+  }
+  if (left >= right) {
+    return false;
+  }
+  if (x > arr[mid]) {
+    return bp(arr, x, mid + 1, right);
+  }
+  if (x < arr[mid]) {
+    return bp(arr, x, left, mid - 1);
+  }
+};
+const sortedArr = [0, 2, 8, 11, 25, 29, 36, 57];
+
+const bp2 = (arr, x) => {
+  let left = 0;
+  let right = arr.length;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+    if (arr[mid] === x) {
+      return mid;
+    }
+    if (left >= right) {
+      return false;
+    }
+
+    if (x > arr[mid]) {
+      left = mid + 1; // и на каждом цикле переназначаем лефт или райт, в зависимости от случая
+    }
+    if (x < arr[mid]) {
+      right = mid - 1;
+    }
+  }
+  return false;
+};
+//  console.log(bp2(sortedArr, 11));
+
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+class BTree {
+  constructor() {
+    this.root = null;
+  }
+
+  add(value) {
+    const newNode = new Node(value);
+    if (!this.root) {
+      this.root = newNode;
+      return;
+    }
+    let currentNode = this.root;
+    while (currentNode) {
+      if (newNode.value < currentNode.value) {
+        if (!currentNode.left) {
+          currentNode.left = newNode;
+          return;
+        }
+        currentNode = currentNode.left;
+      } else {
+        if (!currentNode.right) {
+          currentNode.right = newNode;
+          return;
+        }
+        currentNode = currentNode.right;
+      }
+    }
+  }
+
+  preOrder(node, callback) {
+    if (!node) {
+      return;
+    }
+    if (callback) {
+      callback(node);
+    }
+    this.preOrder(node.left, callback);
+    this.preOrder(node.right, callback);
+  }
+  inOrder(node, callback) {
+    if (!node) {
+      return;
+    }
+    this.inOrder(node.left, callback);
+    if (callback) {
+      callback(node);
+    }
+    this.inOrder(node.right, callback);
+  }
+  postOrder(node, callback) {
+    if (!node) {
+      return;
+    }
+    this.postOrder(node.left, callback);
+    this.postOrder(node.right, callback);
+    if (callback) {
+      callback(node);
+    }
+  }
+  traverseDfs(callback, method) {
+    if (method === "preOrder") {
+      return this.preOrder(this.root, callback);
+    }
+    if (method === "inOrder") {
+      return this.inOrder(this.root, callback);
+    }
+    return this.postOrder(this.root, callback);
+  }
+  traverseBfs(callback){
+    const queue = [this.root];
+    while(queue.length){
+      const node = queue.shift();
+      callback(node);
+      if(node.left){
+        queue.push(node.left);
+      }
+      if(node.right){
+        queue.push(node.right);
+      }
+    }
+  }
+}
+const tree = new BTree();
+ tree.add(10);
+tree.add(5);
+tree.add(15);
+tree.add(18);
+tree.add(3);
+tree.add(7);
+console.log(tree)
+//tree.traverseBfs(this.root, sumTree);
+function sumTree(node) {
+  if (node === null) {
+    return 0; 
+  }
+  return node.value + sumTree(node.left) + sumTree(node.right); }
+console.log(sumTree(tree.root))
