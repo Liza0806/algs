@@ -401,32 +401,146 @@ class BTree {
     }
     return this.postOrder(this.root, callback);
   }
-  traverseBfs(callback){
+  traverseBfs(callback) {
     const queue = [this.root];
-    while(queue.length){
+    debugger;
+    while (queue.length) {
+      debugger;
       const node = queue.shift();
       callback(node);
-      if(node.left){
+      if (node.left) {
+        debugger;
         queue.push(node.left);
       }
-      if(node.right){
+      if (node.right) {
+        debugger;
         queue.push(node.right);
       }
     }
   }
 }
 const tree = new BTree();
- tree.add(10);
+tree.add(10);
 tree.add(5);
 tree.add(15);
 tree.add(18);
 tree.add(3);
 tree.add(7);
-console.log(tree)
-//tree.traverseBfs(this.root, sumTree);
+console.log(tree);
 function sumTree(node) {
   if (node === null) {
-    return 0; 
+    return 0;
   }
-  return node.value + sumTree(node.left) + sumTree(node.right); }
-console.log(sumTree(tree.root))
+  return node.value + sumTree(node.left) + sumTree(node.right);
+}
+
+// tree.traverseBfs(sumTree);
+function isInMiddle(min, max, node) {
+  if (node === null) {
+    return true;
+  }
+
+  if (node.value < min || node.value > max) {
+    return false;
+  }
+  return isInMiddle(min, max, node.left) && isInMiddle(min, max, node.right);
+}
+
+function isInMiddle2(min, max, node) {
+  if (node === null) {
+    return false;
+  }
+
+  let nodeMin = node;
+  let nodeMax = node;
+  while (nodeMin && nodeMin.left !== null) {
+    nodeMin = nodeMin.left;
+  }
+  while (nodeMax && nodeMax.right !== null) {
+    nodeMax = nodeMax.right;
+  }
+
+  if (
+    nodeMin.value >= min &&
+    nodeMin.value <= max &&
+    nodeMax.value >= min &&
+    nodeMax.value <= max
+  ) {
+    return true;
+  }
+  return false;
+}
+//console.log(isInMiddle2(0, 11, tree.root))
+
+function isBinary(node) {
+  if (node === null) {
+    return true;
+  }
+  if (node.left && node.left.value > node.value) {
+    return false;
+  }
+  if (node.right && node.right.value < node.value) {
+    return false;
+  }
+  return isBinary(node.left) && isBinary(node.right);
+}
+function isB(node) {
+  if (node === null) {
+    return true;
+  }
+  if (node.left && node.left.value > node.value) {
+    return false;
+  }
+  if (node.right && node.right.value < node.value) {
+    return false;
+  }
+  return isB(node.left) && isB(node.right);
+}
+console.log(isB(tree.root));
+function isMirror(nodeLeft, nodeRight) {
+  debugger;
+  if (nodeLeft === null && nodeRight === null) {
+    debugger;
+    return true;
+  }
+  if (nodeLeft === null && nodeRight !== null) {
+    debugger;
+    return false;
+  }
+  if (nodeLeft !== null && nodeRight === null) {
+    debugger;
+    return false;
+  }
+  debugger;
+  return (
+    nodeLeft.value === nodeRight.value &&
+    isMirror(nodeLeft.left, nodeRight.right) &&
+    isMirror(nodeLeft.right, nodeRight.left)
+  );
+}
+function isSymmetric(node, callback) {
+  debugger;
+  return callback(node.left, node.right);
+}
+
+//console.log(isSymmetric(tree.root, isMirror));
+
+// function treeLength(node) {
+//   if (node === null) {
+//     debugger;
+//     return 0;
+//   }
+//   debugger;
+//   const left = treeLength(node.left);
+//   const right = treeLength(node.right);
+//   debugger;
+//   return Math.max(left, right) + 1;
+// }
+function isMirror(node) {}
+
+// traverseBfs(callback) {
+//   const queue = [this.root];
+//   while (queue.length) {
+//     const node = queue.shift();
+
+// }
