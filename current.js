@@ -484,19 +484,20 @@ function isBinary(node) {
   }
   return isBinary(node.left) && isBinary(node.right);
 }
-function isB(node) {
+function isB(node, low, high) {
   if (node === null) {
     return true;
   }
-  if (node.left && node.left.value > node.value) {
-    return false;
+  if (node.value > low &&  node.value < high) {
+    return (
+      isB(node.left, low, node.value) &&
+      isB(node.right, node.value, high)
+    );
+}return false
   }
-  if (node.right && node.right.value < node.value) {
-    return false;
-  }
-  return isB(node.left) && isB(node.right);
-}
-console.log(isB(tree.root));
+  
+
+console.log(isB(tree.root, -Infinity, Infinity));
 function isMirror(nodeLeft, nodeRight) {
   debugger;
   if (nodeLeft === null && nodeRight === null) {
