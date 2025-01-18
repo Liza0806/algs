@@ -419,14 +419,14 @@ class BTree {
     }
   }
 }
-const tree = new BTree();
-tree.add(10);
-tree.add(5);
-tree.add(15);
-tree.add(18);
-tree.add(3);
-tree.add(7);
-console.log(tree);
+//const tree = new BTree();
+// tree.add(10);
+// tree.add(5);
+// tree.add(15);
+// tree.add(18);
+// tree.add(3);
+// tree.add(7);
+//console.log(tree);
 function sumTree(node) {
   if (node === null) {
     return 0;
@@ -488,16 +488,68 @@ function isB(node, low, high) {
   if (node === null) {
     return true;
   }
-  if (node.value > low &&  node.value < high) {
-    return (
-      isB(node.left, low, node.value) &&
-      isB(node.right, node.value, high)
-    );
-}return false
+  if (node.value > low && node.value < high) {
+    return isB(node.left, low, node.value) && isB(node.right, node.value, high);
   }
-  
+  return false;
+}
 
-console.log(isB(tree.root, -Infinity, Infinity));
+//console.log(isB(tree.root, -Infinity, Infinity));
+const arrT = [2, 4, 13, 22, 23, 34, 50, 63, 71];
+function toBST1(arr) {
+  const tree = new BTree();
+  func(arr, tree);
+  return tree;
+}
+function func(arr, tree) {
+  if (!arr.length) {
+    return;
+  }
+  console.log(tree);
+  let midIndex = Math.floor(arr.length / 2);
+  tree.add(arr[midIndex]);
+
+  func(arr.slice(0, midIndex), tree);
+  func(arr.slice(midIndex + 1), tree);
+}
+class BTree2 {
+  constructor(value, left = null, right = null) {
+    this.value = value; 
+    this.left = left;   
+    this.right = right; 
+  }
+}
+function toBST2(arr, l=0, r=arr.length) {
+  if (l > r) {  
+debugger
+    return null;
+  }
+  const midInd = Math.floor((l + r) / 2);
+  
+  return new BTree2(
+    arr[midInd],
+    toBST2(arr, l, midInd - 1),
+    toBST2(arr, midInd + 1, r)
+  );
+}
+function toBST3(arr){
+  const tree = new BTree();
+  func2(arr, tree, 0, arr.length)
+return tree;
+}
+function func2(arr, tree, l, r){
+ // debugger
+  if(l > r){
+    return null;
+  }
+  let midIndex = Math.floor((l+r) / 2);
+  tree.add(arr[midIndex]);
+func2(arr, tree, l, midIndex-1)
+func2(arr, tree, midIndex+1, r)
+
+}
+console.log(toBST3(arrT));
+
 function isMirror(nodeLeft, nodeRight) {
   debugger;
   if (nodeLeft === null && nodeRight === null) {
