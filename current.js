@@ -565,7 +565,7 @@ function minKty(node, k, resarr) {
   if (node === null) {
     return;
   }
-  if (resarr.length > k){
+  if (resarr.length >= k){
     return resarr[k-1]
   }
 
@@ -574,6 +574,35 @@ function minKty(node, k, resarr) {
   minKty(node.right, k, resarr); 
   return resarr[k-1]?.value === undefined? 'none' : resarr[k-1]?.value
 }
+function minKty2 (node, k){
+  function inorder(node){
+    if (node === null) {
+      return;
+    }
+   let res = inorder(node.left);
+   if(res !== 0){
+    return res;
+   }
+k = k-1;
+if(k===0){
+  return node.value;
+}
+return inorder(node.right)
+  }
+}
+function print(node, k, resarr) {
+  if (node === null) {
+    return;
+  }
+ 
+ // console.log(node.value); 
+
+  print(node.left, k, resarr) 
+// console.log(node.value); 
+  print(node.right, k, resarr); 
+  console.log(node.value); 
+
+return}
 const tree = new BTree();
 tree.add(10);
 tree.add(5);
@@ -581,7 +610,7 @@ tree.add(15);
 tree.add(18);
 tree.add(3);
 tree.add(11);
-console.log(minKty(tree.root, 3, []));
+console.log(print(tree.root));
 
 function isMirror(nodeLeft, nodeRight) {
   debugger;
