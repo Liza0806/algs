@@ -419,13 +419,7 @@ class BTree {
     }
   }
 }
-const tree = new BTree();
-tree.add(10);
-tree.add(5);
-tree.add(15);
-tree.add(18);
-tree.add(3);
-tree.add(11);
+
 //console.log(tree);
 function sumTree(node) {
   if (node === null) {
@@ -514,60 +508,80 @@ function func(arr, tree) {
 }
 class BTree2 {
   constructor(value, left = null, right = null) {
-    this.value = value; 
-    this.left = left;   
-    this.right = right; 
+    this.value = value;
+    this.left = left;
+    this.right = right;
   }
 }
-function toBST2(arr, l=0, r=arr.length) {
-  if (l > r) {  
-debugger
+function toBST2(arr, l = 0, r = arr.length) {
+  if (l > r) {
+    debugger;
     return null;
   }
   const midInd = Math.floor((l + r) / 2);
-  
+
   return new BTree2(
     arr[midInd],
     toBST2(arr, l, midInd - 1),
     toBST2(arr, midInd + 1, r)
   );
 }
-function toBST3(arr){
+function toBST3(arr) {
   const tree = new BTree();
-  func2(arr, tree, 0, arr.length)
-return tree;
+  func2(arr, tree, 0, arr.length);
+  return tree;
 }
-function func2(arr, tree, l, r){
- // debugger
-  if(l > r){
+function func2(arr, tree, l, r) {
+  // debugger
+  if (l > r) {
     return null;
   }
-  let midIndex = Math.floor((l+r) / 2);
+  let midIndex = Math.floor((l + r) / 2);
   tree.add(arr[midIndex]);
-func2(arr, tree, l, midIndex-1)
-func2(arr, tree, midIndex+1, r)
-} 
+  func2(arr, tree, l, midIndex - 1);
+  func2(arr, tree, midIndex + 1, r);
+}
 
-
-function clothestNum(node, x, clothest = node.value){
-  if (node === null){
+function clothestNum(node, x, clothest = node.value) {
+  if (node === null) {
     return clothest;
   }
-  if (node.value === x){
+  if (node.value === x) {
     return x;
   }
-  clothest = node.value
-  
-if (x < node.value){
-return clothestNum(node.left, x, clothest)
-}
-if (x > node.value){
-  return clothestNum(node.right, x, clothest)
+  clothest = node.value;
+
+  if (x < node.value) {
+    return clothestNum(node.left, x, clothest);
+  }
+  if (x > node.value) {
+    return clothestNum(node.right, x, clothest);
   }
 
   return clothest;
 }
-console.log(clothestNum(tree.root, 1));
+
+function minKty(node, k, resarr) {
+  if (node === null) {
+    return;
+  }
+  if (resarr.length > k){
+    return resarr[k-1]
+  }
+
+  minKty(node.left, k, resarr) 
+     resarr.push(node); 
+  minKty(node.right, k, resarr); 
+  return resarr[k-1]?.value === undefined? 'none' : resarr[k-1]?.value
+}
+const tree = new BTree();
+tree.add(10);
+tree.add(5);
+tree.add(15);
+tree.add(18);
+tree.add(3);
+tree.add(11);
+console.log(minKty(tree.root, 3, []));
 
 function isMirror(nodeLeft, nodeRight) {
   debugger;
