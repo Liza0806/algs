@@ -419,13 +419,13 @@ class BTree {
     }
   }
 }
-//const tree = new BTree();
-// tree.add(10);
-// tree.add(5);
-// tree.add(15);
-// tree.add(18);
-// tree.add(3);
-// tree.add(7);
+const tree = new BTree();
+tree.add(10);
+tree.add(5);
+tree.add(15);
+tree.add(18);
+tree.add(3);
+tree.add(11);
 //console.log(tree);
 function sumTree(node) {
   if (node === null) {
@@ -546,9 +546,28 @@ function func2(arr, tree, l, r){
   tree.add(arr[midIndex]);
 func2(arr, tree, l, midIndex-1)
 func2(arr, tree, midIndex+1, r)
+} 
 
+
+function clothestNum(node, x, clothest = node.value){
+  if (node === null){
+    return clothest;
+  }
+  if (node.value === x){
+    return x;
+  }
+  clothest = node.value
+  
+if (x < node.value){
+return clothestNum(node.left, x, clothest)
 }
-console.log(toBST3(arrT));
+if (x > node.value){
+  return clothestNum(node.right, x, clothest)
+  }
+
+  return clothest;
+}
+console.log(clothestNum(tree.root, 1));
 
 function isMirror(nodeLeft, nodeRight) {
   debugger;
