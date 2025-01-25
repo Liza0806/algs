@@ -40,27 +40,24 @@ class BTree {
     }
 
     let { nodefindEl, parentfindEl } = findEl(this.root, value);
-    console.log(nodefindEl, "nodefindEl");
+    //  console.log(nodefindEl, "nodefindEl");
     if (!nodefindEl) {
       return "this node not in this tree";
     }
 
     if (!nodefindEl.left && !nodefindEl.right) {
-      debugger;
       findElAndDelete(nodefindEl, value, parentfindEl, "noChildren");
-      console.log(nodefindEl, "node2");
+      // console.log(nodefindEl, "node2");
       return node;
     }
     if (
       (nodefindEl.left && !nodefindEl.right) ||
       (!nodefindEl.left && nodefindEl.right)
     ) {
-      debugger;
       let node = findElAndDelete(nodefindEl, value, parentfindEl, "oneChild");
       return node;
     }
     if (nodefindEl.left && nodefindEl.right) {
-      debugger;
       let node = findElAndDelete(
         nodefindEl,
         value,
@@ -112,17 +109,13 @@ class BTree {
   }
   traverseBfs(callback) {
     const queue = [this.root];
-    debugger;
     while (queue.length) {
-      debugger;
       const node = queue.shift();
       callback(node);
       if (node.left) {
-        debugger;
         queue.push(node.left);
       }
       if (node.right) {
-        debugger;
         queue.push(node.right);
       }
     }
@@ -133,8 +126,8 @@ tree.add(10);
 tree.add(5);
 tree.add(15);
 tree.add(18);
-tree.add(3);
 tree.add(11);
+tree.add(3);
 tree.add(6);
 tree.add(6.4);
 tree.add(5.5);
@@ -156,22 +149,17 @@ function min(node) {
   }
   return min(node.left);
 }
-console.log(min(tree.root));
+//console.log(min(tree.root));
 function findEl(node, el, parent = null) {
-  debugger;
   if (node === null) {
-    debugger;
     return null;
   }
   if (node.value === el) {
-    debugger;
     return { parentfindEl: parent, nodefindEl: node };
   }
   if (el < node.value) {
-    debugger;
     return findEl(node.left, el, node);
   } else {
-    debugger;
     return findEl(node.right, el, node);
   }
 }
@@ -197,39 +185,41 @@ function findElAndDelete(node, el, parent, mode) {
             break;
           }
 
-          case "twoChildren":
-            debugger;
-            console.log(node.right, "191");
-            
-            // Ищем минимальный узел в правом поддереве
-            let nodeForChange = min(node.right);
-          
-            // Обновляем node.value
-            node.value = nodeForChange.value;
-            
-            console.log(nodeForChange, "nodeForChange");
-            
-            debugger;
-            // Ищем узел, который был перемещен
-            const { parentfindEl, nodefindEl } = findEl(
-              node.right,
-              nodeForChange.value,
-              node
-            );
-          
-            debugger;
-            // Определяем, сколько детей у узла nodefindEl
-            let mode;
-            if (nodefindEl.left && nodefindEl.right) {
-              mode = "twoChildren";
-            } else if (nodefindEl.left || nodefindEl.right) {
-              mode = "oneChild";
-            } else {
-              mode = "noChildren";
-            }
+        case "twoChildren":
+          //    console.log(node.right, "191");
 
-        // Рекурсивно удаляем узел, из которого взяли значение
-  return findElAndDelete(nodefindEl, nodefindEl.value, parentfindEl, mode);
+          // Ищем минимальный узел в правом поддереве
+          let nodeForChange = min(node.right);
+
+          // Обновляем node.value
+          node.value = nodeForChange.value;
+
+          //  console.log(nodeForChange, "nodeForChange");
+
+          // Ищем узел, который был перемещен
+          const { parentfindEl, nodefindEl } = findEl(
+            node.right,
+            nodeForChange.value,
+            node
+          );
+
+          // Определяем, сколько детей у узла nodefindEl
+          let mode;
+          if (nodefindEl.left && nodefindEl.right) {
+            mode = "twoChildren";
+          } else if (nodefindEl.left || nodefindEl.right) {
+            mode = "oneChild";
+          } else {
+            mode = "noChildren";
+          }
+
+          // Рекурсивно удаляем узел, из которого взяли значение
+          return findElAndDelete(
+            nodefindEl,
+            nodefindEl.value,
+            parentfindEl,
+            mode
+          );
       }
     }
     return;
@@ -240,7 +230,6 @@ function deleteSon(node, el, parent) {
     return;
   }
   if (node.value === el) {
-    debugger;
     parent.value > el ? (parent.left = null) : (parent.right = null);
     return;
   }
@@ -266,8 +255,122 @@ function find(node, k) {
   }
 }
 
-console.log(min(tree.root));
+// console.log(min(tree.root));
 
-tree.delete(5);
-console.log(tree);
-console.log(min(tree.root));
+// tree.delete(5);
+// console.log(tree);
+// console.log(min(tree.root));
+
+function fromTreeToArray(node, arr = []) {
+  if (node === null) {
+    return;
+  }
+  fromTreeToArray(node.left, arr);
+  arr.push(node.value);
+  fromTreeToArray(node.right, arr);
+  return arr;
+}
+function isBinary(node) {
+  if (node === null) {
+    return;
+  }
+  if (node.right && node.left && node.right.value > node.left.value) {
+    return true;
+  }
+  if (node.right && node.left && node.right.value < node.left.value) {
+    return false;
+  }
+  return isBinary(node.right) && isBinary(node.right);
+}
+//console.log(isBinary(tree.root))
+// улучшенная версия
+function isBinary(node, min = -Infinity, max = Infinity) {
+  if (node === null) {
+    return true;
+  }
+
+  if (node.value <= min || node.value >= max) {
+    return false;
+  }
+
+  return (
+    isBinary(node.left, min, node.value) &&
+    isBinary(node.right, node.value, max)
+  );
+}
+
+function isBalanced(node) {
+  if (node === null) {
+    return 0;
+  }
+
+  let leftHeight = isBalanced(node.left);
+  let rightHeight = isBalanced(node.right);
+
+  if (
+    leftHeight === -1 ||
+    rightHeight === -1 ||
+    Math.abs(leftHeight - rightHeight) > 1
+  ) {
+    return -1;
+  }
+
+  // Возвращаем высоту текущего узла
+  return Math.max(leftHeight, rightHeight) + 1;
+}
+
+//Нахождение K-го по величине элемента
+function kTy(node, k, arr = []) {
+  if (node === null) {
+    return;
+  }
+  kTy(node.left, k, arr);
+  if (arr.length >= k) {
+    return arr[arr.length - 1];
+  }
+  arr.push(node.value);
+  kTy(node.right, k, arr);
+}
+function kTy1(node, k, arr = []) {
+  if (node === null) {
+    return;
+  }
+  kTy(node.left, k, arr);
+  arr.push(node.value);
+
+  if (arr.length >= k) {
+    return arr[arr.length - 1];
+  }
+
+  kTy(node.right, k, arr);
+}
+
+// Нахождение общего предка двух узлов
+function commonFather(node, a, b) {
+  if (node === null) {
+    return;
+  }
+  if (a < node.value && b < node.value) {
+    return commonFather(node.left, a, b);
+  }
+  if (a > node.value && b > node.value) {
+    return commonFather(node.right, a, b);
+  }
+
+  return node;
+}
+//Найди путь от корня до узла
+function way(node, x, arr = []) {
+  if (node === null) {
+    return;
+  }
+  if (x === node.value) {
+    return arr;
+  }
+  way(node.left, x, arr);
+
+  way(node.right, x, arr);
+  arr.push(node.value);
+  return arr;
+}
+console.log(way(tree.root, 5));
