@@ -39,27 +39,35 @@ class BTree {
       return;
     }
 
-    let {nodefindEl, parentfindEl} = findEl(this.root, value);
-console.log(nodefindEl,'nodefindEl')
+    let { nodefindEl, parentfindEl } = findEl(this.root, value);
+    console.log(nodefindEl, "nodefindEl");
     if (!nodefindEl) {
       return "this node not in this tree";
     }
 
     if (!nodefindEl.left && !nodefindEl.right) {
-      debugger
+      debugger;
       findElAndDelete(nodefindEl, value, parentfindEl, "noChildren");
-   console.log(nodefindEl, 'node2')
-   return
+      console.log(nodefindEl, "node2");
+      return node;
     }
-    if ((nodefindEl.left && !nodefindEl.right) || (!nodefindEl.left && nodefindEl.right)) {
-   debugger
-      node = findElAndDelete(nodefindEl, value, parentfindEl, "oneChild");
-   return
+    if (
+      (nodefindEl.left && !nodefindEl.right) ||
+      (!nodefindEl.left && nodefindEl.right)
+    ) {
+      debugger;
+      let node = findElAndDelete(nodefindEl, value, parentfindEl, "oneChild");
+      return node;
     }
     if (nodefindEl.left && nodefindEl.right) {
-      debugger
-      node = findElAndDelete(nodefindEl, value, parentfindEl, "twoChildren");
-   return
+      debugger;
+      let node = findElAndDelete(
+        nodefindEl,
+        value,
+        parentfindEl,
+        "twoChildren"
+      );
+      return node;
     }
   }
 
@@ -132,13 +140,7 @@ tree.add(6.4);
 tree.add(5.5);
 tree.add(1);
 tree.add(4);
-// tree.add(10);
-// tree.add(-9);
-// tree.add(14);
-// tree.add(12);
-// tree.add(-6);
-// tree.add(15);
-// tree.add(-14);
+
 function max(node, parent = 0) {
   if (node === null) {
     return parent;
@@ -154,37 +156,36 @@ function min(node) {
   }
   return min(node.left);
 }
-console.log(min(tree.root))
+console.log(min(tree.root));
 function findEl(node, el, parent = null) {
-  debugger
+  debugger;
   if (node === null) {
-    debugger
+    debugger;
     return null;
   }
   if (node.value === el) {
-    debugger
-    return {parentfindEl, nodefindEl};
+    debugger;
+    return { parentfindEl: parent, nodefindEl: node };
   }
   if (el < node.value) {
-    debugger
+    debugger;
     return findEl(node.left, el, node);
   } else {
-    debugger
+    debugger;
     return findEl(node.right, el, node);
   }
 }
 function findElAndDelete(node, el, parent, mode) {
-  if ((el < node.value) && node.left) {
+  if (el < node.value && node.left) {
     return findElAndDelete(node.left, el, node, mode);
-  } else if ((el > node.value) && node.right) {
+  } else if (el > node.value && node.right) {
     return findElAndDelete(node.right, el, node, mode);
   } else {
     if (node.value === el) {
       switch (mode) {
         case "noChildren":
-          parent.value> el? parent.left = null : parent.right = null;
-        //node = null;
-        break
+          parent.value > el ? (parent.left = null) : (parent.right = null);
+          break;
 
         case "oneChild":
           if (node.left) {
@@ -192,67 +193,63 @@ function findElAndDelete(node, el, parent, mode) {
             break;
           }
           if (node.right) {
-            parent.right= node.right;
-        break
+            parent.right = node.right;
+            break;
           }
 
-        case "twoChildren":
-          debugger
-          console.log(node.right, '191')
-          let nodeForChange = min(node.right);
-   
-          parent.value > el? parent.left.value = nodeForChange?.value : parent.right.value  = nodeForChange.value
-       let mode; 
-      console.log(nodeForChange, 'nodeForChange')
-     
-      debugger
-      const { parent, node} = findEl(node.right, nodeForChange.value, node)
-      debugger
-      if (node.left && node.right){
-        mode = 'twoChildren'
-      }
-      if (node.left || node.right){
-        mode = 'oneChld'
-      }
-      if (!node.left && !node.right){
-        mode = 'noChildren'
-      }
-   
-          findElAndDelete(
-            node,
-            node.value,
-            parent,
-           mode
-          );
-          return;
+          case "twoChildren":
+            debugger;
+            console.log(node.right, "191");
+            
+            // Ищем минимальный узел в правом поддереве
+            let nodeForChange = min(node.right);
+          
+            // Обновляем node.value
+            node.value = nodeForChange.value;
+            
+            console.log(nodeForChange, "nodeForChange");
+            
+            debugger;
+            // Ищем узел, который был перемещен
+            const { parentfindEl, nodefindEl } = findEl(
+              node.right,
+              nodeForChange.value,
+              node
+            );
+          
+            debugger;
+            // Определяем, сколько детей у узла nodefindEl
+            let mode;
+            if (nodefindEl.left && nodefindEl.right) {
+              mode = "twoChildren";
+            } else if (nodefindEl.left || nodefindEl.right) {
+              mode = "oneChild";
+            } else {
+              mode = "noChildren";
+            }
+
+        // Рекурсивно удаляем узел, из которого взяли значение
+  return findElAndDelete(nodefindEl, nodefindEl.value, parentfindEl, mode);
       }
     }
-    return
+    return;
   }
 }
-function deleteSon(node, el, parent){
-  if(node === null){
-    return
-  }
-  if(node.value === el){
-    debugger
-    parent.value > el? parent.left = null : parent.right = null
-    return
-  }
-  if (el>node.value){
-    deleteSon(node.right, el, node)
-  }
-  if (el<node.value){
-    deleteSon(node.left, el, node)
-  }
- }
- 
-
-function max(node, parent = 0) {
+function deleteSon(node, el, parent) {
   if (node === null) {
-    return parent;
+    return;
   }
-   max(node.right, node.value);
+  if (node.value === el) {
+    debugger;
+    parent.value > el ? (parent.left = null) : (parent.right = null);
+    return;
+  }
+  if (el > node.value) {
+    deleteSon(node.right, el, node);
+  }
+  if (el < node.value) {
+    deleteSon(node.left, el, node);
+  }
 }
 
 function find(node, k) {
@@ -272,184 +269,5 @@ function find(node, k) {
 console.log(min(tree.root));
 
 tree.delete(5);
-console.log(tree)
+console.log(tree);
 console.log(min(tree.root));
-
-let arr = [];
-
-function compare(node, arr) {
-  if (node === null) {
-    return arr;
-  }
-
-  let leftHeight = heigh(node.left);
-  let rightHeight = heigh(node.right);
-
-  if (leftHeight !== rightHeight) {
-    arr.push(node.value);
-  }
-
-  compare(node.left, arr);
-  compare(node.right, arr);
-  return arr;
-}
-
-function isSimm(node) {
-  if (node === null) {
-    return true;
-  }
-  if ((!node.left && node.right) || (node.left && !node.right)) {
-    debugger;
-    return false;
-  }
-  return isSimm(node.left) && isSimm(node.right);
-}
-function findMaxKty(node, k) {
-  let maxKty = 0;
-  let count = 0;
-  function helper(node, k) {
-    if (node === null) {
-      return;
-    }
-
-    helper(node.right, k);
-    count++;
-    if (k === count) {
-      maxKty = node.value;
-      return;
-    }
-    helper(node.left, k);
-  }
-  helper(node, k);
-  return maxKty;
-}
-//console.log(findMaxKty(tree.root, 3));
-
-function findMinKty(node, k) {
-  let maxKty = 0;
-  let count = 0;
-  function helper(node, k) {
-    if (node === null) {
-      return;
-    }
-
-    helper(node.left, k);
-    count++;
-    if (k === count) {
-      maxKty = node.value;
-      return;
-    }
-    helper(node.right, k);
-  }
-  helper(node, k);
-  return maxKty;
-}
-function heigh(node) {
-  if (node === null) {
-    return 0;
-  }
-  let l = heigh(node.left);
-  let r = heigh(node.right);
-  let res = Math.max(l, r) + 1;
-
-  return res;
-}
-function minKty2(node, k) {
-  function inorder(node) {
-    if (node === null) {
-      return;
-    }
-    let res = inorder(node.left);
-    if (res !== 0) {
-      return res;
-    }
-    k = k - 1;
-    if (k === 0) {
-      return node.value;
-    }
-    return inorder(node.right);
-  }
-}
-
-function maxK(node, x) {
-  let count = 0;
-  let res = null;
-
-  function helper(node) {
-    if (!node || count >= x) {
-      return;
-    }
-
-    helper(node.right);
-    count++;
-    if (count === x) {
-      res = node.value;
-      return res;
-    }
-    helper(node.left);
-  }
-  helper(node);
-  return res;
-}
-
-function sum(node) {
-  if (node === null) {
-    return 0;
-  }
-  return node.value + sum(node.left) + sum(node.right);
-}
-
-function print1(node) {
-  if (node === null) {
-    return;
-  }
-  print1(node.left);
-  console.log(node.value);
-  print1(node.right);
-}
-
-const arr1 = [2, 5, 11, 13, 34, 45, 77, 85, 100];
-function fromArrToTree(arr) {
-  const newTree = new BTree();
-
-  fromArrToTreeHelp(arr, (l = 0), (r = arr.length), newTree);
-
-  return newTree;
-}
-function fromArrToTreeHelp(arr, l, r, newTree) {
-  if (!arr.length) {
-    return;
-  }
-
-  if (l >= r) {
-    return;
-  }
-
-  const midInd = Math.floor((l + r) / 2);
-  newTree.add(arr[midInd]);
-  fromArrToTreeHelp(arr, l, midInd - 1, newTree);
-  fromArrToTreeHelp(arr, midInd + 1, r, newTree);
-}
-
-function difTrees(node, arrPl = [], arrMin = []) {
-  if (node === null) {
-    return;
-  }
-  if (node.value > 0) {
-    arrPl.push(node.value);
-  } else {
-    arrMin.push(node.value);
-  }
-  difTrees(node.left, arrPl, arrMin);
-  difTrees(node.right, arrPl, arrMin);
-
-  const treeP = new BTree();
-  arrPl.map((el) => treeP.add(el));
-
-  const treeM = new BTree();
-  arrMin.map((el) => treeM.add(el));
-
-  return [treeP, treeM];
-}
-//console.log(fromArrToTree(arr1));
-
